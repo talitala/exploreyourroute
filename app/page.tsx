@@ -7,6 +7,16 @@ export default function Home() {
     <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center"
       style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #2d1b00 50%, #1a1a2e 100%)" }}
     >
+      {/* Logo */}
+      <div className="mb-8">
+        <img
+          src="/logo.svg"
+          alt="ExploreYourRoute Logo"
+          className="w-20 h-20 mx-auto"
+          style={{ filter: "drop-shadow(0 0 10px rgba(201,169,110,0.3))" }}
+        />
+      </div>
+
       {/* Subtle top label */}
       <p className="uppercase tracking-[0.3em] text-sm mb-6"
         style={{ color: "#c9a96e", fontFamily: "var(--font-inter)" }}

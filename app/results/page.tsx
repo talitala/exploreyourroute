@@ -93,6 +93,16 @@ function ResultsContent() {
 
   return (
     <main style={bgStyle} className="px-6 py-16">
+      {/* Logo */}
+      <div className="text-center mb-8">
+        <img
+          src="/logo.svg"
+          alt="ExploreYourRoute Logo"
+          className="w-12 h-12 mx-auto opacity-60"
+          style={{ filter: "drop-shadow(0 0 6px rgba(201,169,110,0.15))" }}
+        />
+      </div>
+
       {/* Header */}
       <div className="text-center mb-16 max-w-2xl mx-auto">
         <p className="uppercase tracking-widest text-sm mb-4" style={{ color: gold }}>Your itinerary</p>

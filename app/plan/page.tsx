@@ -289,6 +289,16 @@ export default function PlanPage() {
 
   return (
     <main style={bgStyle} className="flex flex-col items-center justify-center px-6 py-12">
+      {/* Logo */}
+      <div className="mb-8">
+        <img
+          src="/logo.svg"
+          alt="ExploreYourRoute Logo"
+          className="w-14 h-14 mx-auto opacity-80"
+          style={{ filter: "drop-shadow(0 0 8px rgba(201,169,110,0.2))" }}
+        />
+      </div>
+
       <AnimatePresence mode="wait" custom={direction}>
         <motion.div
           key={step}
