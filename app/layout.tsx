@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next"
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -101,6 +102,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable} h-full`}>
       <body className="min-h-full flex flex-col">{children}</body>
       <GoogleAnalytics gaId="G-50RVX27TS8" />
+      <Analytics />
     </html>
   );
 }
