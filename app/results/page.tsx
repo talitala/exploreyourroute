@@ -44,6 +44,73 @@ type Itinerary = {
   tips: string[];
 };
 
+const GYG_PARTNER_ID = "5PAICX4";
+
+function BookingSection({ destination }: { destination: string }) {
+  const city = destination.split(",")[0].trim();
+  const encoded = encodeURIComponent(city);
+
+  const links = [
+    {
+      emoji: "🎟️",
+      label: "Tours & Activities",
+      sublabel: "Powered by GetYourGuide",
+      href: `https://www.getyourguide.com/s/?q=${encoded}&partner_id=${GYG_PARTNER_ID}`,
+      color: "#e07b54",
+    },
+    // {
+    //   emoji: "🏨",
+    //   label: "Find Hotels",
+    //   sublabel: "Powered by Booking.com",
+    //   href: `https://www.booking.com/searchresults.html?ss=${encoded}`,
+    //   color: "#6eb5c9",
+    // },
+    {
+      emoji: "✈️",
+      label: "Search Flights",
+      sublabel: "Powered by Expedia",
+      href: `https://www.expedia.com/Hotel-Search?destination=${encoded}&camref=1110lBBCj`,
+      color: "#9b8ec9",
+    },
+  ];
+
+  return (
+    <div className="rounded-2xl p-6 mt-4"
+      style={{ background: "rgba(201,169,110,0.06)", border: `1px solid rgba(201,169,110,0.3)` }}>
+      <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "var(--font-playfair)", color: gold }}>
+        🗺️ Ready to Book?
+      </h3>
+      <p className="text-sm mb-6 opacity-60" style={{ color: cream }}>
+        Everything you need for {city} in one place.
+      </p>
+      <div className="flex flex-col gap-3">
+        {links.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between px-5 py-4 rounded-xl transition-all hover:scale-[1.02]"
+            style={{
+              background: `${link.color}15`,
+              border: `1px solid ${link.color}44`,
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{link.emoji}</span>
+              <div>
+                <p className="font-semibold text-sm" style={{ color: cream }}>{link.label}</p>
+                <p className="text-xs opacity-50" style={{ color: cream }}>{link.sublabel}</p>
+              </div>
+            </div>
+            <span className="text-sm font-semibold" style={{ color: link.color }}>Book →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ResultsContent() {
   const searchParams = useSearchParams();
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
@@ -112,11 +179,15 @@ function ResultsContent() {
         <div className="h-px w-24 mx-auto" style={{ background: gold }} />
       </div>
 
+      {/* Booking Section */}
+      <div className="max-w-2xl mx-auto mb-12">
+        <BookingSection destination={itinerary.destination} />
+      </div>
+
       {/* Days */}
       <div className="max-w-2xl mx-auto flex flex-col gap-12">
         {itinerary.days.map((day, i) => (
           <div key={i}>
-            {/* Day header */}
             <div className="flex items-center gap-4 mb-6">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0"
                 style={{ background: gold, color: "#1a1a2e" }}>
@@ -127,8 +198,6 @@ function ResultsContent() {
                 <p className="text-sm italic" style={{ color: gold }}>{day.theme}</p>
               </div>
             </div>
-
-            {/* Time blocks */}
             <div className="flex flex-col gap-4 ml-5 border-l pl-8"
               style={{ borderColor: "rgba(201,169,110,0.2)" }}>
               {day.blocks.map((block, j) => (
@@ -154,7 +223,7 @@ function ResultsContent() {
 
         {/* Tips */}
         {itinerary.tips?.length > 0 && (
-          <div className="rounded-2xl p-6 mt-4"
+          <div className="rounded-2xl p-6"
             style={{ background: "rgba(201,169,110,0.08)", border: `1px solid rgba(201,169,110,0.3)` }}>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "var(--font-playfair)", color: gold }}>
               ✨ Travel Tips
@@ -170,7 +239,7 @@ function ResultsContent() {
         )}
 
         {/* Plan again */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 pb-8">
           <a href="/plan" className="px-10 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 inline-block"
             style={{ background: gold, color: "#1a1a2e" }}>
             Plan Another Trip →
