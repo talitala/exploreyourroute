@@ -4,7 +4,14 @@ import { Resend } from "resend";
 import jsPDF from "jspdf";
 import { redis } from "@/lib/kv";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing RESEND_API_KEY");
+  }
+
+  return new Resend(apiKey);
+}
 
 type Block = {
   time: string;
@@ -247,7 +254,7 @@ export async function POST(req: NextRequest) {
     const pdfBuffer = generatePDFBuffer(itinerary);
     const base64PDF = pdfBuffer.toString("base64");
     const destination = itinerary.destination || "Your Trip";
-
+    const resend = getResendClient();
     const fromAddress = process.env.RESEND_FROM_EMAIL || "support@exploreyourroute.com";
 
     await resend.emails.send({
