@@ -155,7 +155,14 @@ export async function GET(req: NextRequest) {
   });
 
   if (!orderRes.ok) {
-    return NextResponse.json({ error: "Unable to fetch order details" }, { status: orderRes.status });
+    const orderError = await orderRes.text().catch(() => "");
+    return NextResponse.json(
+      {
+        error: "Unable to fetch order details",
+        details: orderError,
+      },
+      { status: orderRes.status }
+    );
   }
 
   const orderData = await orderRes.json();
@@ -165,10 +172,17 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Order is not paid yet" }, { status: 400 });
   }
 
-  const itineraryId =
+  let itineraryId =
     orderData?.data?.attributes?.custom_data?.itinerary_id ||
     orderData?.data?.attributes?.meta?.custom_data?.itinerary_id ||
     orderData?.data?.attributes?.meta?.custom_data?.id;
+
+  if (!itineraryId) {
+    const mappedItineraryId = await redis.get(`order:${orderId}`);
+    if (mappedItineraryId && typeof mappedItineraryId === "string") {
+      itineraryId = mappedItineraryId;
+    }
+  }
 
   if (!itineraryId) {
     return NextResponse.json({ error: "Missing itinerary ID in order data" }, { status: 400 });
@@ -182,8 +196,13 @@ export async function GET(req: NextRequest) {
 
   let itinerary: Itinerary;
   try {
-    itinerary = JSON.parse(stored as string) as Itinerary;
-  } catch {
+    if (typeof stored === "string") {
+      itinerary = JSON.parse(stored as string) as Itinerary;
+    } else {
+      itinerary = stored as Itinerary;
+    }
+  } catch (err) {
+    console.error("Unable to parse itinerary from Redis", err, { stored });
     return NextResponse.json({ error: "Corrupted itinerary data" }, { status: 500 });
   }
 

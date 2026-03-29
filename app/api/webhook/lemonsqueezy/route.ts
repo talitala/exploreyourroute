@@ -234,9 +234,13 @@ export async function POST(req: NextRequest) {
 
     let itinerary: Itinerary;
     try {
-      itinerary = JSON.parse(stored as string) as Itinerary;
+      if (typeof stored === "string") {
+        itinerary = JSON.parse(stored as string) as Itinerary;
+      } else {
+        itinerary = stored as Itinerary;
+      }
     } catch (err) {
-      console.error("Unable to parse itinerary from Redis", err);
+      console.error("Unable to parse itinerary from Redis", err, { stored });
       return NextResponse.json({ error: "Corrupted itinerary data" }, { status: 500 });
     }
 
@@ -250,6 +254,11 @@ export async function POST(req: NextRequest) {
       }),
       { ex: 60 * 60 * 24 }
     );
+
+    const orderId = payload?.data?.id;
+    if (orderId) {
+      await redis.set(`order:${orderId}`, itineraryId, { ex: 60 * 60 * 24 });
+    }
 
     const pdfBuffer = generatePDFBuffer(itinerary);
     const base64PDF = pdfBuffer.toString("base64");
