@@ -53,6 +53,21 @@ NEXT_PUBLIC_GOOGLE_MAPS_KEY=your_google_maps_key
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
+If you are using Vercel KV or Upstash via `@vercel/kv`, also add one of the supported connection values:
+
+```
+KV_URL=your_redis_connection_url
+KV_REST_API_URL=your_kv_rest_api_url
+KV_REST_API_TOKEN=your_kv_rest_api_token
+```
+
+This app also accepts equivalent project-specific aliases like:
+
+```
+EXAMPLE_KV_URL=...
+EXAMPLE_KV_REST_API_URL=...
+```
+
 ### Run Locally
 
 ```bash
