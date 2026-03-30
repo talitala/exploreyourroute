@@ -376,7 +376,7 @@ async function handleExportPDF() {
             className="flex-1 px-6 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50"
             style={{ background: gold, color: "#1a1a2e" }}
           >
-            {exporting ? "Preparing..." : "⬇️ Export PDF — $4.99"}
+            {exporting ? "Preparing..." : "⬇️ Export PDF — $3.99"}
           </button>
         </div>
 
