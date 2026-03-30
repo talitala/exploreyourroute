@@ -78,20 +78,55 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://exploreyourroute.com",
   },
+  applicationName: "ExploreYourRoute",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a2e" },
+  ],
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   category: "travel",
   icons: {
     icon: [
-      { url: "/favicon.ico?v=2" },
-      { url: "/favicon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: "/apple-touch-icon.png?v=2",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
     other: [
-      { rel: "android-chrome-192x192", url: "/android-chrome-192x192.png?v=2" },
-      { rel: "android-chrome-512x512", url: "/android-chrome-512x512.png?v=2" },
+      { rel: "android-chrome-192x192", url: "/android-chrome-192x192.png" },
+      { rel: "android-chrome-512x512", url: "/android-chrome-512x512.png" },
     ],
   },
   manifest: "/site.webmanifest",
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://exploreyourroute.com/#organization",
+      "name": "ExploreYourRoute",
+      "url": "https://exploreyourroute.com",
+      "logo": "https://exploreyourroute.com/logo.svg",
+      "sameAs": ["https://twitter.com/exploreyourroute"]
+    },
+    {
+      "@type": "WebSite",
+      "url": "https://exploreyourroute.com",
+      "name": "ExploreYourRoute",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://exploreyourroute.com/plan?destination={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
 };
 
 export default function RootLayout({
@@ -107,9 +142,15 @@ export default function RootLayout({
         strategy="afterInteractive"
         async
       />
-      <body className="min-h-full flex flex-col">{children}</body>
-      <GoogleAnalytics gaId="G-50RVX27TS8" />
-      <Analytics />
+      <body className="min-h-full flex flex-col">
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <GoogleAnalytics gaId="G-50RVX27TS8" />
+        <Analytics />
+      </body>
     </html>
   );
 }
