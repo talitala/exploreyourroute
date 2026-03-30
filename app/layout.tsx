@@ -91,7 +91,7 @@ export const metadata: Metadata = {
   category: "travel",
   icons: {
     icon: [
-      { url: "/favicon.ico" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
@@ -113,7 +113,7 @@ const structuredData = {
       "@id": "https://exploreyourroute.com/#organization",
       "name": "ExploreYourRoute",
       "url": "https://exploreyourroute.com",
-      "logo": "https://exploreyourroute.com/logo.svg",
+      "logo": "https://exploreyourroute.com/logo.png",
       "sameAs": ["https://twitter.com/exploreyourroute"]
     },
     {
